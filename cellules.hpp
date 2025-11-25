@@ -1,28 +1,38 @@
 #pragma once
 
-class cellules {
+#include <memory>
+
+class etatCellule {
   public:
-    virtual bool estVivante() const = 0;
-    virtual void setVivante(bool etat) = 0;
-    virtual ~cellules() {}
+    virtual bool etat() const = 0;
 };
 
-class   celluleVivante : public cellules {
-  private:
-    bool vivante;
-
+class   celluleVivante : public etatCellule {
   public:
-    celluleVivante() : vivante(true) {}
-    bool estVivante() const override { return vivante; }
-    void setVivante(bool etat) override { vivante = etat; }
+    bool etat()override { return true; }
 }; 
 
-class celluleMorte : public cellules {
-  private:
-    bool vivante;
-
+class celluleMorte : public etatCellule {
   public:
-    celluleMorte() : vivante(false) {}
-    bool estVivante() const override { return vivante; }
-    void setVivante(bool etat) override { vivante = etat; }
+    bool etat()override { return false; }
 };
+
+class cellules {
+    etatCellule* etat;
+  public:
+    cellules(etatCellule* e) : etat(e) {}
+    void setetat(bool vivant){
+        if(vivant){
+            etat = new celluleVivante();
+        } else {
+            etat = new celluleMorte();
+        }
+    }
+    bool getetat(){
+        return etat->etat();
+    }
+    char tochar(){
+        return etat->etat() ? 'O' : '.';
+    }
+};
+
