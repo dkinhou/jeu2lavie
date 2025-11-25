@@ -11,12 +11,13 @@ class grille {
         std::vector<std::vector<std::unique_ptr<cellules>>> cellulesGrille;
     
     public:
-        grille(int l, int h) : largeur(l), hauteur(h), cellulesGrille(h, std::vector<std::unique_ptr<cellules>>(l, nullptr)) {}
+        grille(int h, int l) : largeur(h), hauteur(l), cellulesGrille(h, std::vector<std::unique_ptr<cellules>>(l, nullptr)) {}
     
-        void setCellule(int x, int y, std::unique_ptr<cellules> cellule) {
+        void setcellule(int x, int y, std::unique_ptr<cellules> c) {
             if (x >= 0 && x < largeur && y >= 0 && y < hauteur) {
-                cellulesGrille[y][x] = std::move(cellule);
+                cellulesGrille[y][x] = std::move(c);
             }
+
         }
     
         cellules* getCellule(int x, int y) const {
