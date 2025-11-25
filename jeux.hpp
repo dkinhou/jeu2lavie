@@ -20,8 +20,6 @@ class jeux {
             return fichier;
         }
 
-        
-
         grille setgrille{
             std::fstream file(fichier);
             if(file.is_open()){
@@ -42,7 +40,7 @@ class jeux {
             } else {
                 std::cout<<"Erreur lors de l'ouverture du fichier : "<<fichier<<std::endl;
             }
-            return g;
+         return g;
         }
         
 
