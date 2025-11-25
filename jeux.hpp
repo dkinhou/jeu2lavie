@@ -2,18 +2,18 @@
 #include "grille.hpp"
 //#include "graphique.hpp"
 #include "rule.hpp"
+#include <fstream>
 
 class jeux {
     private:
         std::string fichier;        
-        grille g;
+        grille *g;
         
     public:
         jeux(){
             std::cout<<"Entrez le nom du fichier de départ : "<<std::endl;
             std::cin>>fichier;
-            std::cout<<"Entrez le nom du dossier de sauvegarde : "<<std::endl;
-            std::cin>>dossierSauvegarde;
+            
 
         }    
         std::string get_sf(){

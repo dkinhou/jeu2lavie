@@ -21,13 +21,7 @@ class cellules {
     etatCellule* etat;
   public:
     cellules(etatCellule* e) : etat(e) {}
-    void setetat(bool vivant){
-        if(vivant){
-            etat = new celluleVivante();
-        } else {
-            etat = new celluleMorte();
-        }
-    }
+    
     bool getetat(){
         return etat->etat();
     }

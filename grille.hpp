@@ -22,7 +22,7 @@ class grille {
     
         cellules* getCellule(int x, int y) const {
             if (x >= 0 && x < largeur && y >= 0 && y < hauteur) {
-                return cellulesGrille[y][x];
+                return cellulesGrille[y][x].get();
             }
             return nullptr;
         }
