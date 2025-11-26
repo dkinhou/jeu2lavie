@@ -3,55 +3,68 @@
 //#include "graphique.hpp"
 #include "rule.hpp"
 #include <fstream>
+#include <iostream>
+#include <string>
+#include <memory>
+#include <filesystem>
 
 class jeux {
     private:
-        std::string fichier;        
-        grille *g;
+        std::string fichier;
+        std::string dossierSauvegarde;
+        std::unique_ptr<grille> g;
         
     public:
         jeux(){
             std::cout<<"Entrez le nom du fichier de départ : "<<std::endl;
             std::cin>>fichier;
-            
-
-        }    
+            std::cout<<"Entrez le nom du dossier de sauvegarde : "<<std::endl;
+            std::cin>>dossierSauvegarde;
+            if(!std::filesystem::exists(dossierSauvegarde)){
+                std::filesystem::create_directories(dossierSauvegarde);
+            }
+        }
         std::string get_sf(){
             return fichier;
         }
 
-        grille setgrille{
+        std::string get_df(){
+            return dossierSauvegarde;
+        }
+
+        std::unique_ptr<grille> setgrille(){
             std::fstream file(fichier);
             if(file.is_open()){
                 int l,h;
                 file>>h>>l;
-                g = grille(h,l);
+                auto grid = std::make_unique<grille>(h,l);
                 for(int i=0;i<h;i++){
                     for(int j=0;j<l;j++){
                         char c;
                         file>>c;
-                        if(c=='1'){
-                            g.setcellule(j,i,std::make_unique<celluleVivante>());
-                        } else {
-                            g.setcellule(j,i,std::make_unique<celluleMorte>());
-                        }
+                                if(c=='1'){
+                                    grid->setcellule(j,i,std::make_unique<celluleVivante>());
+                                } else {
+                                    grid->setcellule(j,i,std::make_unique<celluleMorte>());
+                                }
                     }
                 }
+                g = std::move(grid);
             } else {
                 std::cout<<"Erreur lors de l'ouverture du fichier : "<<fichier<<std::endl;
             }
-         return g;
+         return std::move(g);
         }
         
 
-        void saveGrille(int generation){
+        void saveGrille(const grille& gnext, int generation){
             std::ofstream file(dossierSauvegarde + "/generation_" + std::to_string(generation) + ".txt");
             if(file.is_open()){
                 file<<gnext.getHauteur()<<" "<<gnext.getLargeur()<<std::endl;
                 for(int i=0;i<gnext.getHauteur();i++){
                     for(int j=0;j<gnext.getLargeur();j++){
                         cellules* cell = gnext.getCellule(j,i);
-                        file<<(cell->getetat() ? '1' : '0');
+                        file<<((cell && cell->getetat()) ? '1' : '0');
                     }
                     file<<std::endl;
                 }

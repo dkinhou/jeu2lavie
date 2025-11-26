@@ -1,32 +1,22 @@
 #pragma once
 
-
-
-class etatCellule {
-  public:
-    virtual bool etat() const = 0;
-};
-
-class   celluleVivante : public etatCellule {
-  public:
-    bool etat()override { return true; }
-}; 
-
-class celluleMorte : public etatCellule {
-  public:
-    bool etat()override { return false; }
-};
+#include <memory>
 
 class cellules {
-    etatCellule* etat;
   public:
-    cellules(etatCellule* e) : etat(e) {}
-    
-    bool getetat(){
-        return etat->etat();
-    }
-    char tochar(){
-        return etat->etat() ? 'O' : '.';
-    }
+    virtual bool getetat() const = 0;
+    virtual char tochar() const = 0;
+    virtual ~cellules() = default;
 };
 
+class celluleVivante : public cellules {
+  public:
+    bool getetat() const override { return true; }
+    char tochar() const override { return '1'; }
+};
+
+class celluleMorte : public cellules {
+  public:
+    bool getetat() const override { return false; }
+    char tochar() const override { return '0'; }
+};

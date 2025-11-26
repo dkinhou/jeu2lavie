@@ -1,8 +1,8 @@
-#pragma once 
+ #pragma once
 
 #include "cellules.hpp"
 #include <vector>
-#include <memory> 
+#include <memory>
 
 class grille {
     private:
@@ -11,7 +11,14 @@ class grille {
         std::vector<std::vector<std::unique_ptr<cellules>>> cellulesGrille;
     
     public:
-        grille(int h, int l) : largeur(h), hauteur(l), cellulesGrille(h, std::vector<std::unique_ptr<cellules>>(l, nullptr)) {}
+
+        grille(){}
+        grille(int h, int l) : largeur(l), hauteur(h) {
+            cellulesGrille.resize(h);
+            for (auto &row : cellulesGrille) {
+                row.resize(l);
+            }
+        }
     
         void setcellule(int x, int y, std::unique_ptr<cellules> c) {
             if (x >= 0 && x < largeur && y >= 0 && y < hauteur) {
