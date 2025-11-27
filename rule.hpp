@@ -54,7 +54,9 @@ class baserule : public rule {
             for (int dy = -1; dy <= 1; ++dy) {
                 for (int dx = -1; dx <= 1; ++dx) {
                     if (dx == 0 && dy == 0) continue; // Ignorer la cellule elle-même
-                    cellules* voisin = g.getCellule(x + dx, y + dy);
+                    int voisin_x = (x + dx + g.getLargeur()) % g.getLargeur();
+                    int voisin_y = (y + dy + g.getHauteur()) % g.getHauteur();
+                    cellules* voisin = g.getCellule(voisin_x, voisin_y);
                     if (voisin && voisin->getetat()){
                         count++;
                     }
