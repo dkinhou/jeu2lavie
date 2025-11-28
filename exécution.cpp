@@ -67,6 +67,7 @@ void printgraph()
   {
     baserule regle;
     jeux game;
+    game.normal();
     std::unique_ptr<grille> gptr = game.setgrille();
     grille guse = std::move(*gptr);
     grille gnext;

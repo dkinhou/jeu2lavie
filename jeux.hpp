@@ -53,8 +53,12 @@ class jeux {
                         file>>c;
                                 if(c=='1'){
                                     grid->setcellule(j,i,std::make_unique<celluleVivante>());
-                                } else {
+                                } else if(c=='0'){
                                     grid->setcellule(j,i,std::make_unique<celluleMorte>());
+                                } else if(c=='X'){
+                                    grid->setcellule(j,i,std::make_unique<celluleObstaclemorte>());
+                                } else if(c=='Y'){
+                                    grid->setcellule(j,i,std::make_unique<celluleObstaclevivante>());
                                 }
                     }
                 }
@@ -73,7 +77,11 @@ class jeux {
                 for(int i=0;i<gnext.getHauteur();i++){
                     for(int j=0;j<gnext.getLargeur();j++){
                         cellules* cell = gnext.getCellule(j,i);
+                        if(cell && (cell->tochar() == 'X' || cell->tochar() == 'Y')){
+                            file<<cell->tochar();
+                        } else {
                         file<<((cell && cell->getetat()) ? '1' : '0');
+                        }
                     }
                     file<<std::endl;
                 }

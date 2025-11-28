@@ -23,6 +23,50 @@ class baserule : public rule {
                 for (int x = 0; x < g.getLargeur(); ++x) {
                     cellules* cell = g.getCellule(x, y);
                     int voisinsVivants = compterVoisinsVivants(g, x, y);
+                    bool currentAlive = (cell && cell->getetat());
+                    bool nextAlive = false;
+                    if (currentAlive) {
+                        // survive with 2 or 3 neighbors
+                        if (voisinsVivants == 2 || voisinsVivants == 3) {
+                            nextAlive = true;
+                        }
+                    } else {
+                        // dead cell becomes alive with exactly 3 neighbors
+                        if (voisinsVivants == 3) {
+                            nextAlive = true;
+                        }
+                    }
+                
+                    if (nextAlive) {
+                        nouvelleGrille.setcellule(x, y, std::make_unique<celluleVivante>());
+                    } else {
+                        nouvelleGrille.setcellule(x, y, std::make_unique<celluleMorte>());
+                    }
+                }
+            }
+    
+            return nouvelleGrille;
+        }
+        /*
+        grille appliquerRegleobstacle(grille& g) {
+            // Implémentation de la règle du Jeu de la Vie avec obstacles
+            
+            grille nouvelleGrille(g.getHauteur(), g.getLargeur()); // Crée une nouvelle grille vide
+    
+            for (int y = 0; y < g.getHauteur(); ++y) {
+                for (int x = 0; x < g.getLargeur(); ++x) {
+                    cellules* cell = g.getCellule(x, y);
+                    int voisinsVivants = compterVoisinsVivants(g, x, y);
+
+                    if (cell && (cell->tochar() == 'X' || cell->tochar() == 'Y')) {
+                        // Garder les obstacles inchangés
+                        if (cell->tochar() == 'X') {
+                            nouvelleGrille.setcellule(x, y, std::make_unique<celluleObstaclemorte>());
+                        } else {
+                            nouvelleGrille.setcellule(x, y, std::make_unique<celluleObstaclevivante>());
+                        }
+                        continue;
+                    }
 
                     bool currentAlive = (cell && cell->getetat());
                     bool nextAlive = false;
@@ -37,6 +81,7 @@ class baserule : public rule {
                             nextAlive = true;
                         }
                     }
+                
                     if (nextAlive) {
                         nouvelleGrille.setcellule(x, y, std::make_unique<celluleVivante>());
                     } else {
@@ -47,8 +92,7 @@ class baserule : public rule {
     
             return nouvelleGrille;
         }
-    
-    
+        */
         int compterVoisinsVivants(const grille& g, int x, int y) {
             int count = 0;
             for (int dy = -1; dy <= 1; ++dy) {
