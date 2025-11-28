@@ -16,10 +16,19 @@ class jeux {
         
     public:
         jeux(){
+            
+        }
+        
+        void testunit(){
+            std::cout<<"Entrez le nom du fichier attendue : "<<std::endl;
+            std::cin>>fichier;
+
+        }
+
+        void normal(){
             std::cout<<"Entrez le nom du fichier de départ : "<<std::endl;
             std::cin>>fichier;
-            std::cout<<"Entrez le nom du dossier de sauvegarde : "<<std::endl;
-            std::cin>>dossierSauvegarde;
+            dossierSauvegarde = fichier + "_out";
             if(!std::filesystem::exists(dossierSauvegarde)){
                 std::filesystem::create_directories(dossierSauvegarde);
             }

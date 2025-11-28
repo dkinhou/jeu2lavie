@@ -5,7 +5,7 @@ void printgraph()
 {
     baserule regle;
     jeux game;
-
+    game.normal();
     std::unique_ptr<grille> gptr = game.setgrille();
     grille guse = std::move(*gptr);
     grille gnext;
@@ -17,7 +17,7 @@ void printgraph()
     );
 
     sf::Clock clock;
-    const sf::Time interval = sf::milliseconds(30000); // temps entre générations
+    const sf::Time interval = sf::milliseconds(3000); // temps entre générations
 
     while (window.isOpen())
     {
@@ -33,7 +33,7 @@ void printgraph()
         {
             gnext = regle.appliquerRegle(guse);
             guse = std::move(gnext);
-            clock.restart();
+            clock.restart(); 
         }
 
         // Rendu
@@ -50,24 +50,62 @@ void printgraph()
   {
     baserule regle;
     jeux game;
+    game.normal();
     std::unique_ptr<grille> gptr = game.setgrille();
     grille guse = std::move(*gptr);
     grille gnext;
+    
     for (int generation = 0; generation < 10; ++generation) {
         gnext = regle.appliquerRegle(guse);
         guse = std::move(gnext);
         game.saveGrille(guse, generation);
     }
   }
+
+
+  void testunitaire(grille& gatendue, int generation)
+  {
+    baserule regle;
+    jeux game;
+    std::unique_ptr<grille> gptr = game.setgrille();
+    grille guse = std::move(*gptr);
+    grille gnext;
+    
+    for (int gen = 0; gen < generation; ++gen) {
+        gnext = regle.appliquerRegle(guse);
+        guse = std::move(gnext);
+    }
+
+    // Comparer guse avec gatendue
+    for (int y = 0; y < guse.getHauteur(); ++y) {
+        for (int x = 0; x < guse.getLargeur(); ++x) {
+            if (guse.getCellule(x, y)->getetat() != gatendue.getCellule(x, y)->getetat()) {
+                std::cout << "Test unitaire échoué à la génération " << generation << " à la position (" << x << ", " << y << ")\n";
+                return;
+            }
+        }
+    }
+    std::cout << "Test unitaire réussi pour la génération " << generation << "\n";
+    
+  }
+
 int main() {
-    std::cout << "choisissez votre mode :"
-              << "1. affichage console"
-              << "2. affichage graphique" <<std::endl;
+    std::cout << "choisissez votre mode :"<<std::endl
+              << "1. affichage console" << std::endl
+              << "2. affichage graphique" <<std::endl
+              << "3. test unitaire" <<std::endl;
     int mode;
     std::cin >> mode;
 
     if (mode==1) printconsole();
     if(mode==2) printgraph();
+    if(mode == 3){
+        jeux attendueGame;
+        attendueGame.testunit();
+        std::unique_ptr<grille> gatenduePtr;
+        gatenduePtr = attendueGame.setgrille();
+        testunitaire(*gatenduePtr, 10);
+    }
 
     return 0;
 }
