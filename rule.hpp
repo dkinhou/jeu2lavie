@@ -8,6 +8,7 @@
 class rule {
     public:
         virtual grille appliquerRegle(grille& g) = 0;
+        virtual int compterVoisinsVivants(const grille& g, int x, int y) = 0;
         virtual ~rule() {}
 };
 
@@ -25,6 +26,15 @@ class baserule : public rule {
                     int voisinsVivants = compterVoisinsVivants(g, x, y);
                     bool currentAlive = (cell && cell->getetat());
                     bool nextAlive = false;
+                    if (cell && (cell->tochar() == 'X' || cell->tochar() == 'Y')) {
+                        // Garder les obstacles inchangés
+                        if (cell->tochar() == 'X') {
+                            nouvelleGrille.setcellule(x, y, std::make_unique<celluleObstaclemorte>());
+                        } else {
+                            nouvelleGrille.setcellule(x, y, std::make_unique<celluleObstaclevivante>());
+                        }
+                        continue;
+                    }
                     if (currentAlive) {
                         // survive with 2 or 3 neighbors
                         if (voisinsVivants == 2 || voisinsVivants == 3) {
@@ -93,7 +103,7 @@ class baserule : public rule {
             return nouvelleGrille;
         }
         */
-        int compterVoisinsVivants(const grille& g, int x, int y) {
+        int compterVoisinsVivants(const grille& g, int x, int y) override{
             int count = 0;
             for (int dy = -1; dy <= 1; ++dy) {
                 for (int dx = -1; dx <= 1; ++dx) {

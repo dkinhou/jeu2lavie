@@ -16,7 +16,6 @@ class jeux {
         
     public:
         jeux(){
-            
         }
         
         void testunit(){

@@ -26,6 +26,7 @@ class graph
     for (x = 0; x < gridWidth; ++x) {
         for (y = 0; y < gridHeight; ++y) {
             if ((grid.getCellule(x, y))->getetat() && (grid.getCellule(x, y))->tochar() == '1') {
+                cell.setFillColor(sf::Color::White);
                 cell.setPosition(x * cellsize, y * cellsize);
                 window.draw(cell);
             }
@@ -33,13 +34,13 @@ class graph
                 cell.setFillColor(sf::Color::Green);
                 cell.setPosition(x * cellsize, y * cellsize);
                 window.draw(cell);
-                //cell.setFillColor(sf::Color::White);
+                
             }
             else if (!(grid.getCellule(x, y))->getetat() && (grid.getCellule(x, y))->tochar() == 'X') {
                 cell.setFillColor(sf::Color::Red);
                 cell.setPosition(x * cellsize, y * cellsize);
                 window.draw(cell);
-                //cell.setFillColor(sf::Color::White);
+                
             }
         }
     }
