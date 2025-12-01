@@ -88,4 +88,49 @@ class jeux {
                 std::cout<<"Erreur lors de l'ouverture du fichier de sauvegarde."<<std::endl;
             }
         }
+
+        // Ajouter des formes prédéfinies
+
+    void blinkers(int x_offset, int y_offset, grille& gr){
+        gr.setcellule(x_offset, y_offset + 1, std::make_unique<celluleVivante>());
+        gr.setcellule(x_offset + 1, y_offset + 1, std::make_unique<celluleVivante>());
+        gr.setcellule(x_offset + 2, y_offset + 1, std::make_unique<celluleVivante>());
+    }
+
+    void gliders(int x_offset, int y_offset, grille& gr){
+        gr.setcellule(x_offset + 1, y_offset, std::make_unique<celluleVivante>());
+        gr.setcellule(x_offset + 2, y_offset + 1, std::make_unique<celluleVivante>());
+        gr.setcellule(x_offset, y_offset + 2, std::make_unique<celluleVivante>());
+        gr.setcellule(x_offset + 1, y_offset + 2, std::make_unique<celluleVivante>());
+        gr.setcellule(x_offset + 2, y_offset + 2, std::make_unique<celluleVivante>());
+    }
+
+    void spaceship(int x_offset, int y_offset, grille& gr){
+        gr.setcellule(x_offset + 1, y_offset, std::make_unique<celluleVivante>());
+        gr.setcellule(x_offset + 2, y_offset, std::make_unique<celluleVivante>());
+        gr.setcellule(x_offset + 3, y_offset, std::make_unique<celluleVivante>());
+        gr.setcellule(x_offset + 4, y_offset, std::make_unique<celluleVivante>());
+        gr.setcellule(x_offset, y_offset + 1, std::make_unique<celluleVivante>());
+        gr.setcellule(x_offset + 4, y_offset + 1, std::make_unique<celluleVivante>());
+        gr.setcellule(x_offset + 4, y_offset + 2, std::make_unique<celluleVivante>());
+        gr.setcellule(x_offset, y_offset + 3, std::make_unique<celluleVivante>());
+        gr.setcellule(x_offset + 3, y_offset + 3, std::make_unique<celluleVivante>());
+    }
+
+    void ajouterObstacle(int x_offset, int y_offset, grille& gr, bool vivante){
+        if(vivante){
+            gr.setcellule(x_offset, y_offset, std::make_unique<celluleObstaclevivante>());
+        } else {
+            gr.setcellule(x_offset, y_offset, std::make_unique<celluleObstaclemorte>());
+        }
+    }
+    void ajoutercellule(int x, int y, grille& gr, bool vivante){
+        if(vivante){
+            gr.setcellule(x, y, std::make_unique<celluleVivante>());
+        } else {
+            gr.setcellule(x, y, std::make_unique<celluleMorte>());
+        }
+    }
+
+
 };

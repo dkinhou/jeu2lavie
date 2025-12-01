@@ -9,6 +9,8 @@ void printgraph()
     std::unique_ptr<grille> gptr = game.setgrille();
     grille guse = std::move(*gptr);
     grille gnext;
+    sf::Keyboard::Key currentPatternKey = sf::Keyboard::Unknown;
+    bool paused = false;
 
     // Fenêtre créée UNE SEULE FOIS
     sf::RenderWindow window(
@@ -17,19 +19,68 @@ void printgraph()
     );
 
     sf::Clock clock;
-    const sf::Time interval = sf::milliseconds(3000); // temps entre générations
+    const sf::Time interval = sf::milliseconds(1500); // temps entre générations
 
     while (window.isOpen())
     {
         // Gestion des événements
         sf::Event event;
         while (window.pollEvent(event)) {
+            if (event.type == sf::Event::KeyPressed){
+                if(event.key.code == sf::Keyboard::Space){
+                    paused = !paused;
+                }
+            }
+
             if (event.type == sf::Event::Closed)
-                window.close();
+              window.close();
+
+            
+            
+        if (event.type == sf::Event::MouseButtonPressed) {
+            if (event.mouseButton.button == sf::Mouse::Left) {
+                int mouseX = event.mouseButton.x;
+                int mouseY = event.mouseButton.y;
+                int cellX = mouseX / 100;
+                int cellY = mouseY / 100;
+
+                // CORRECTION ICI : On vérifie l'état matériel de la touche B
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::B)) { 
+                    currentPatternKey = sf::Keyboard::B; 
+                    game.blinkers(cellX, cellY, guse);
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::G)) { 
+                    currentPatternKey = sf::Keyboard::G; 
+                    game.gliders(cellX, cellY, guse);
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { 
+                    currentPatternKey = sf::Keyboard::S; 
+                    game.spaceship(cellX, cellY, guse);
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::V)) { 
+                    currentPatternKey = sf::Keyboard::V; 
+                    game.ajouterObstacle(cellX, cellY, guse, true);
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::M)) { 
+                    currentPatternKey = sf::Keyboard::M; 
+                    game.ajouterObstacle(cellX, cellY, guse, false);
+                }
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+                    currentPatternKey = sf::Keyboard::A;
+                    game.ajoutercellule(cellX, cellY, guse, true);
+                }
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+                    currentPatternKey = sf::Keyboard::D;
+                    game.ajoutercellule(cellX, cellY, guse, false);
+                }
+
         }
 
+            
+        }    
+
         // Mise à jour de la génération toutes les X millisecondes
-        if (clock.getElapsedTime() >= interval)
+        if (paused == false && clock.getElapsedTime() >= interval)
         {
             gnext = regle.appliquerRegle(guse);
             guse = std::move(gnext);
@@ -41,8 +92,9 @@ void printgraph()
         graph graph(guse.getHauteur(), guse.getLargeur(), guse);
         graph.renderGrid(window);
         window.display();
+        }
     }
-}
+};    
 
 
 

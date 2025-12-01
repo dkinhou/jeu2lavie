@@ -14,7 +14,7 @@ class graph
     int gridWidth;
     int gridHeight;
     grille& grid;
-
+    sf::Event event;
     public:
     graph(int gridHeight, int gridWidth, grille& grid ): gridHeight(gridHeight), gridWidth(gridWidth),  grid(grid){}
     void renderGrid(sf::RenderWindow &window)
@@ -50,5 +50,7 @@ class graph
     int getcellsize(){ return cellsize;}
 
 
-
 };
+
+
+
