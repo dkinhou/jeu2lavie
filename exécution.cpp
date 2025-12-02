@@ -37,7 +37,7 @@ void printgraph()
 
             
             
-        if (event.type == sf::Event::MouseButtonPressed) {
+            if (event.type == sf::Event::MouseButtonPressed) {
             if (event.mouseButton.button == sf::Mouse::Left) {
                 int mouseX = event.mouseButton.x;
                 int mouseY = event.mouseButton.y;
@@ -73,10 +73,8 @@ void printgraph()
                     currentPatternKey = sf::Keyboard::D;
                     game.ajoutercellule(cellX, cellY, guse, false);
                 }
-
-        }
-
-            
+            }
+            }            
         }    
 
         // Mise à jour de la génération toutes les X millisecondes
@@ -92,7 +90,7 @@ void printgraph()
         graph graph(guse.getHauteur(), guse.getLargeur(), guse);
         graph.renderGrid(window);
         window.display();
-        }
+        
     }
 };    
 
@@ -106,8 +104,10 @@ void printgraph()
     std::unique_ptr<grille> gptr = game.setgrille();
     grille guse = std::move(*gptr);
     grille gnext;
-    
-    for (int generation = 0; generation < 10; ++generation) {
+    int gmax;
+    std::cout << "Combien de générations voulez-vous afficher ?" << std::endl;
+    std::cin >> gmax;
+    for (int generation = 0; generation < gmax; ++generation) {
         gnext = regle.appliquerRegle(guse);
         guse = std::move(gnext);
         game.saveGrille(guse, generation);
@@ -157,7 +157,10 @@ int main() {
         attendueGame.testunit();
         std::unique_ptr<grille> gatenduePtr;
         gatenduePtr = attendueGame.setgrille();
-        testunitaire(*gatenduePtr, 10);
+        int genmax;
+        std::cout << "Entrez le numéro de génération à tester :" << std::endl;
+        std::cin >> genmax;
+        testunitaire(*gatenduePtr, genmax);
     }
 
     return 0;

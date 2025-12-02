@@ -1,53 +1,28 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-#include <vector>
-#include <ctime>
-#include <cstdlib>
-#include <memory>
-#include "grille.hpp"
+#include <SFML/Graphics.hpp>//inclure les bibliotheques SFML pour la gestion graphique
+#include <vector>//inclure la bibliotheque vector pour utiliser les vecteurs
+#include <ctime>//inclure la bibliotheque ctime pour la gestion du temps
+#include <cstdlib>//inclure la bibliotheque cstdlib pour les fonctions utilitaires
+#include <memory>//inclure la bibliotheque memory pour la gestion de la memoire
+#include "grille.hpp"//inclure le fichier grille.hpp pour utiliser la classe grille
+
+//utilisation des espaces de noms std et sf
+using namespace std;
+using namespace sf;
 
 class graph 
 {
     private:
-    const int cellsize=100;
-    int gridWidth;
-    int gridHeight;
-    grille& grid;
-    sf::Event event;
+    const int cellsize=100;//taille de chaque cellule dans la grille
+    int gridWidth;//largeur de la grille
+    int gridHeight;//hauteur de la grille
+    grille& grid;//reference a un objet grille
+    Event event;//objet pour gerer les evenements de la fenetre
     public:
-    graph(int gridHeight, int gridWidth, grille& grid ): gridHeight(gridHeight), gridWidth(gridWidth),  grid(grid){}
-    void renderGrid(sf::RenderWindow &window)
-    {
-    int x, y;
-    
-    window.clear();
-    sf::RectangleShape cell(sf::Vector2f(cellsize - 1.0f, cellsize - 1.0f));
-    for (x = 0; x < gridWidth; ++x) {
-        for (y = 0; y < gridHeight; ++y) {
-            if ((grid.getCellule(x, y))->getetat() && (grid.getCellule(x, y))->tochar() == '1') {
-                cell.setFillColor(sf::Color::White);
-                cell.setPosition(x * cellsize, y * cellsize);
-                window.draw(cell);
-            }
-            else if ((grid.getCellule(x, y))->getetat() && (grid.getCellule(x, y))->tochar() == 'Y') {
-                cell.setFillColor(sf::Color::Green);
-                cell.setPosition(x * cellsize, y * cellsize);
-                window.draw(cell);
-                
-            }
-            else if (!(grid.getCellule(x, y))->getetat() && (grid.getCellule(x, y))->tochar() == 'X') {
-                cell.setFillColor(sf::Color::Red);
-                cell.setPosition(x * cellsize, y * cellsize);
-                window.draw(cell);
-                
-            }
-        }
-    }
-    window.display();
-    }
-    
-    int getcellsize(){ return cellsize;}
+    graph(int gridHeight, int gridWidth, grille& grid );//constructeur personnalisé de la classe graph
+    void renderGrid(RenderWindow &window);//methode pour afficher la grille dans une fenetre SFML
+    int getcellsize();//methode pour obtenir la taille d'une cellule
 
 
 };
