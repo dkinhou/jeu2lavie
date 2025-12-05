@@ -36,7 +36,7 @@ unique_ptr<grille> jeux::setgrille(){
     if(file.is_open()){
         int l,h;
         file>>h>>l;
-        auto grid = make_unique<grille>(h,l);
+        unique_ptr<grille> grid = make_unique<grille>(h,l);
         for(int i=0;i<h;i++){
             for(int j=0;j<l;j++){
                 char c;

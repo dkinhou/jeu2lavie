@@ -3,7 +3,7 @@
 // Implémentation du constructeur personnalisé
 grille::grille(int h, int l) : largeur(l), hauteur(h) {
     cellulesGrille.resize(h);
-    for (auto &row : cellulesGrille) {
+    for (vector<unique_ptr<cellules>> &row : cellulesGrille) {
         row.resize(l);
     }
 }
